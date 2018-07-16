@@ -382,3 +382,27 @@ curl -X POST \
   }
 }'
 ```
+
+## Upload de template para um médico
+
+É possível customizar o cabeçalho e rodapé da impressão da prescrição de um médico. Para isso, criamos um endpoint para que você possa fazer o upload dessas informações do para o seu médico. Basta chamar o endpoint passando um arquivo PDF como template. O arquivo PDF precisa possuir um cabeçalho e rodapé. Veja aqui um exemplo: [Template Exemplo](files/exemplo-template.pdf)
+
+### Requisição de exemplo:
+```bash
+curl -X POST \
+  'http://api.memed.com.br/v1/opcoes-receituario/upload-template?token=AQUI_VAI_O_TOKEN_DO_USUARIO' \
+  -H 'Accept: application/vnd.api+json' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  -H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' \
+  -F template=template-file.pdf
+```
+
+Perceba que nessa requisição, você vai precisar enviar um parâmetro `template` que contém um arquivo do tipo PDF. Em caso de sucesso, a API irá retornar um JSON contendo a imagem de header e footer que foram geradas e serão usadas na hora da impressão da prescrição médica.
+
+### Exemplo de resposta:
+```json
+{
+    "header": "https://memed.s3-sa-east-1.amazonaws.com/parceiros/templates/imagem-header.jpeg",
+    "footer": "https://memed.s3-sa-east-1.amazonaws.com/parceiros/templates/imagem-footer.jpeg"
+}
+```
